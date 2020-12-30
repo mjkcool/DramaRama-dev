@@ -1,0 +1,116 @@
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DRAMA라마</title>
+    <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon"/>
+    <style>
+		@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
+        p{ color: #aba2ff;
+           font-size: 60px;
+           font-family: 'Noto Sans KR', sans-serif;
+         }
+
+        a{
+            color: #febfa9;
+            font-size: 20px;
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+        pq{
+            color:  #868296;
+            font-size: 20px;
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+        button{ background-color: #aba2ff;
+                width: 100px;
+                height: 50px;
+                border-radius: 5px;
+                border: 0;
+                outline: 0;
+                }
+        button:hover{
+            background-color: #aba2ff;
+                width: 110px;
+                height: 60px;
+                border-radius: 5px;
+                border: 0;
+                outline: 0;
+        }
+	</style>
+</head>
+<body>
+
+<div style="text-align: center;">
+<button input type="submit" value="돌아가기" <button input type="submit" onclick="history.go(-1)">돌아가기</button>
+<p>나의 응답</p>
+<pq>1. 나이 : </pq>
+<a>{{answer.age}}</a> <br><br>
+
+<pq>2. 성별 : </pq>
+<a>{{answer.gender}}</a> <br><br>
+
+<pq>3. 성격 : </pq>
+<a>{{answer.personality}}</a> <br><br>
+
+<pq>4. 활동적인 편 : </pq>
+<a>{{answer.activity}}</a> <br><br>
+
+<pq>5. 직업 : </pq>
+<a>{{answer.job}}</a> <br><br>
+
+<pq>6. 관심사 : </pq>
+<a>{{answer.interested}}</a> <br><br>
+
+<pq>7. 재학 여부 : </pq>
+<a>{{answer.school}}</a> <br><br>
+
+<pq>8. 재직 여부 : </pq>
+<a>{{answer.work}}</a> <br><br>
+
+<pq>9. 거주지 : </pq>
+<a>{{answer.abode}}</a> <br><br>
+
+<pq>10. 형제자매 수 : </pq>
+<a>{{answer.siblings}}</a> <br><br>
+
+<pq>11. 가족 수 : </pq>
+<a>{{answer.family}}</a> <br><br>
+
+<pq>12. 자취여부 : </pq>
+<a>{{answer.livealone}}</a> <br><br>
+
+<pq>13. 전공계열 : </pq>
+<a>{{answer.major}}</a> <br><br>
+
+<pq>14. 경제상황 : </pq>
+<a>{{answer.homeecomony}}</a> <br><br>
+
+<pq>15. 연애경험 유무 : </pq>
+<a>{{answer.havedate}}</a> <br><br>
+
+<pq>16. 신체적인 문제로 힘들었던 경험 유무 : </pq>
+<a>{{answer.physicaltrouble}}</a> <br><br>
+
+<pq>17. 정신적인 문제로 힘들었던 경험 유무 : </pq>
+<a>{{answer.mentaltrouble}}</a> <br><br>
+
+<p>드라마 시청에 대한 대답</p>
+
+<pq>1. 선호장르 : </pq>
+<a>{{answer.prefergenre}}</a> <br><br>
+
+<pq>2. 선호채널 : </pq>
+<a>{{answer.preferchannel}}</a> <br><br>
+
+<pq>3. 주 시청 시간(휴일중) : </pq>
+<a>{{answer.watchingtime}}</a> <br><br>
+
+<pq>4. 드라마 주 시청 수단 : </pq>
+<a>{{answer.used}}</a> <br><br>
+
+<pq>5. 드라마 주 시청 방법 : </pq>
+<a>{{answer.way}}</a> <br><br>
+</div>
+</body>
+</html>
