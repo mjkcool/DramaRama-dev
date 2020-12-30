@@ -7,3 +7,4 @@ db.sqlite3
 .DS_Store
 formdata.csv
 settings.py
+pyvenv.cfg
