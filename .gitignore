@@ -1,0 +1,9 @@
+*.pyc
+*~
+__pycache__
+myvenv
+drama_datas.sqlite3
+db.sqlite3
+.DS_Store
+formdata.csv
+settings.py
