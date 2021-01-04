@@ -26,6 +26,7 @@ def solution(input_data):
 
     # Read form data
     form_df = pd.read_csv('./dramarama/static/data/formdata.csv')
+    # id도 드랍
     form_df.drop(['date'], axis='columns', inplace=True)
     form_df = form_df.fillna('')  # NaN값 제거
 
@@ -67,10 +68,10 @@ def solution(input_data):
             process_weight(drama_code, first, second, third)  # compute weight
             weight_df = pd.DataFrame()  # Initialize
 
-    suffled = list(weight_list.items())
-    random.shuffle(suffled)
-    suffled_weight_list = dict(suffled)
-    sorted_weight = sorted(weight_list.items(), key=operator.itemgetter(1), reverse=True)  # form: tuples in list
+    weight_list_items = list(weight_list.items())
+    random.shuffle(weight_list_items)
+    suffled_weight_list = dict(weight_list_items)
+    sorted_weight = sorted(suffled_weight_list.items(), key=operator.itemgetter(1), reverse=True)  # form: tuples in list
     drama_obj = drama_df[drama_df['id'].astype(str) == sorted_weight[randrange(3)][0]]
 
     return dict(drama_obj.iloc[0])
