@@ -33,7 +33,7 @@ def solution(input_data):
     col_names = list(form_df)
 
     # DB Connection - Read drama data
-    conn= sqlite3.connect('./drama_datas.sqlite3')
+    conn= sqlite3.connect('./db.sqlite3')
     cur = conn.cursor()
     cur.execute("SELECT * FROM dramarama_drama")
     rows = cur.fetchall()

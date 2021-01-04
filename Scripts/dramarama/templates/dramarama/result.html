@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>DRAMA라마</title>
     <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon"/>
-    <style>
+    <!--<style>
 		@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap');
         p{ color: #aba2ff;
            font-size: 100px;
@@ -24,21 +24,17 @@
                 border: 0;
                 outline: 0ch;
         }
-    </style>
+    </style>-->
 </head>
 <body>
-    <div style="text-align: center;">
-    <h3 style="color: #C1BCFA" id="dramaname">{{Drama.title}}</h3><br>
+    <h3 id="dramaname">{{Drama.title}}</h3>
     <h3 id="broadcast">{{Drama.channel}}</h3>
     <iframe id="dramainfo" src="{{Drama.info_url}}" width="80%" height="500px"></iframe>
-    <br><br>
     <form action="your-answer" method="post">
         <button>나의대답</button>
     </form>
-    <br>
     <a href="{% url 'index' %}">
         <button type="submit">홈</button>
     </a>
-    </div>
 </body>
 </html>

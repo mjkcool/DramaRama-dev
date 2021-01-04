@@ -4,73 +4,34 @@
     <meta charset="UTF-8">
     <title>DramaRama</title>
     <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon"/>
-    <link rel="stylesheet" href="{% static 'css/base.css' %}" type="text/css"/>
+<!--    <link rel="stylesheet" href="{% static 'css/base.css' %}" type="text/css"/>-->
+<!--    <link rel="stylesheet" href="{% static 'css/index.css' %}" type="text/css"/>-->
     <style>
-        div.container{
-            margin: 2%;
-        }
-        .group{
-            /*background: url("../../static/images/balloon_pc.svg") no-repeat;*/
-        }
-        div.title{
-            color: #404040;
-            font-size: 100px;
-            font-family: 'Cafe24Ssurround';
-        }
-        div.desc{
-            font-family: 'Noto Sans KR';
-            font-weight: 500;
-            font-size: 20px;
-            line-height: 30px;
-            margin: 10px 0px 10px 0px;
-            color: beige;
-        }
-        .desc-l{
-            color: #404040;
-            margin-top: 15px;
-            font-size: 18px;
-            font-family: 'Cafe24Ssurround';
-        }
-        div.btn{
-            margin: 15px;
-        }
-        img{
-            height: 300px;
-        }
-        footer{
-            font-family: 'Cafe24Ssurroundair';
-            bottom: 0;
-            width: 100%;
-            padding: 10px 0 10px 0;
-            font-size: 14px;
-            position: fixed;
-	        z-index: 30;
-        }
+
 	</style>
 </head>
 
 <body>
     <div class="container">
-        <div class="group">
-            <div class="title"><font color="#8469d0">D</font>ramaRama</div>
-            <div class="desc">
-                🦙라마가 너에게 꼭 맞는 드라마를 추천해줄거야💜<br>
-                나는 무슨 드라마 보지❔🤷‍♀️🤷‍♂️💭
-                <div class="desc-l">
-                    실제 드라마 시청자들의 설문 데이터를 이용한 맞춤 드라마 추천 서비스
-                </div>
+        <div class="title"><font color="#8469d0">D</font>ramaRama</div>
+        <div class="desc">
+            🦙라마가 너에게 꼭 맞는 드라마를 추천해줄거야💜<br>
+            나는 무슨 드라마 보지❔🤷‍♀️🤷‍♂️💭
+            <div class="desc-l">
+                실제 드라마 시청자들의 설문 데이터를 이용한 맞춤 드라마 추천 서비스
             </div>
         </div>
         <img src="{% static 'images/dramarama-img1.png' %}">
         <div class="btn">
-            <a href="{% url 'form' %}">
-               <button input type="submit">추천 받기</button>
-            </a>
+
+            <form action="Who-you-are" method="post">
+               <button input type="submit">나에게 맞는 드라마 찾으러 가기</button>
+            </form>
         </div>
         <div class="btn">
-            <a href="{% url 'index' %}">
-               <button input type="submit">내 드라마 취향 공유하기</button>
-            </a>
+<!--            <a href="{% url 'index' %}">-->
+               <button>내 드라마 취향 공유하기</button>
+<!--            </a>-->
         </div>
     </div>
     <footer>
