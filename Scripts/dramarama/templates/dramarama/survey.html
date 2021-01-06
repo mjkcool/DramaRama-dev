@@ -12,35 +12,10 @@
 	</script>
 	<link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon"/>
 <!--	<link rel="stylesheet" href="{% static 'css/base.css' %}" type="text/css"/>-->
-	<!--<style>
-		.item{
-			background-color: aliceblue;
-			border-radius: 50px;
-			padding: 20px;
-			width: 50%;
-			max-width: 600px;
-			min-width: 300px;
-		}
-		.section-name{
-			font-family: 'Cafe24Ssurround';
-			color: #8469d0; font-size: 24px;
-			margin: 15px;
-		}
-		.ins{
-			font-family: 'Noto Sans KR';
-			color: #8469d0;
-			font-size: 14px;
-			margin-bottom: 15px;
-		}
-		.radios{
-			font-family: 'Noto Sans KR';
-			color: #404040; font-size: 16px;
-		}
-	</style>-->
 
 </head>
-<body onload="noBack();" onpageshow="if(event.persisted) noBack();" onunload="">
-	<form name="testForm" action="To.you--From.Rama💜" method="post">
+<body>
+	<form name="testForm" action="" method="post">
 		* 표시되어있는 것은 필수로 체크해주세요.
 		<div class="item">
 			<span class="section-name">나이</span>
@@ -251,7 +226,15 @@
 				<input type="radio" name="way" value="다시보기, 연재작(온라인 콘텐츠 플랫폼 ex.NETFLIX, 왓챠)" required = "required">다시보기, 연재작 (온라인 콘텐츠 플랫폼 ex.NETFLIX, 왓챠)
 			</div>
 		</div>
-		<button input type="submit" value="나에게 맞는 드라마는?">라마의 추천결과 보러가기</button>
+        <div class="item">
+            <div class="section-name">* 1순위</div>
+            <input/>
+            <div class="section-name">2순위</div>
+            <input/>
+            <div class="section-name">3순위</div>
+            <input/>
+        </div>
+		<button input type="submit">제출</button>
 	</form>
 </body>
 </html>

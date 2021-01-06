@@ -36,9 +36,6 @@ def result(request):
     input_form = dict(request.POST)
     request.session['input'] = input_form
 
-
-
-
     context = {'Drama':sol.solution(input_form)}
 
     return render(request, 'dramarama/result.html', context)

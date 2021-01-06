@@ -25,22 +25,34 @@ def process_weight(drama_code, first, second, third):
 def solution(input_data):
 
     # Read form data
-    form_df = pd.read_csv('./dramarama/static/data/formdata.csv')
-    # id도 드랍
-    form_df.drop(['date'], axis='columns', inplace=True)
-    form_df = form_df.fillna('')  # NaN값 제거
+    # form_df = pd.read_csv('./dramarama/static/data/formdata.csv')
+    # form_df.drop(['date'], axis='columns', inplace=True)
+    # form_df = form_df.fillna('')  # NaN값 제거
 
-    # Column name list
-    col_names = list(form_df)
-
-    # DB Connection - Read drama data
-    conn= sqlite3.connect('./db.sqlite3')
+    # DB Connection
+    # Read survey data
+    conn = sqlite3.connect('./db.sqlite3')
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM dramarama_survey")
+    rows = cur.fetchall()
+    cols = [column[0] for column in cur.description]
+    form_df = pd.DataFrame.from_records(data=rows, columns=cols)
+    cur.close()
+    # Read drama data
     cur = conn.cursor()
     cur.execute("SELECT * FROM dramarama_drama")
     rows = cur.fetchall()
     cols = [column[0] for column in cur.description]
     drama_df = pd.DataFrame.from_records(data=rows, columns=cols)
+    cur.close()
     conn.close()
+
+    form_df.drop(['date'], axis='columns', inplace=True)
+    form_df.drop(['id'], axis='columns', inplace=True) #inplace=True -> 덮어쓰기
+    form_df = form_df.fillna('')  # NaN값 제거
+
+    # Column name list
+    col_names = list(form_df)
 
     # drama code
     data = list(drama_df['value'])
@@ -69,9 +81,10 @@ def solution(input_data):
             weight_df = pd.DataFrame()  # Initialize
 
     weight_list_items = list(weight_list.items())
-    random.shuffle(weight_list_items)
+    random.shuffle(weight_list_items) #리스트 섞기
     suffled_weight_list = dict(weight_list_items)
+    #섞인 리스트 정리
     sorted_weight = sorted(suffled_weight_list.items(), key=operator.itemgetter(1), reverse=True)  # form: tuples in list
     drama_obj = drama_df[drama_df['id'].astype(str) == sorted_weight[randrange(3)][0]]
 
-    return dict(drama_obj.iloc[0])
+    return dict(drama_obj.iloc[0]) #행을 딕셔너리로
