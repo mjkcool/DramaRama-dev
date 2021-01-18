@@ -14,7 +14,7 @@ from dramarama import main_solution as sol
 
 @method_decorator(csrf_exempt)
 def index(request):
-    return render(request, 'dramarama/index.html')
+    return render(request, 'dramarama/cover.html')
 
 @method_decorator(csrf_exempt)
 def form(request):
