@@ -39,3 +39,8 @@ def result(request):
     context = {'Drama':sol.solution(input_form)}
 
     return render(request, 'dramarama/result.html', context)
+
+@method_decorator(csrf_exempt)
+def survey(request):
+
+    return render(request, 'dramarama/survey.html')
