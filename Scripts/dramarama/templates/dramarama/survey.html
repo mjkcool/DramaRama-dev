@@ -20,41 +20,83 @@
 	<link href="{% static 'css/form.css' %}" rel="stylesheet">
 	<link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon"/>
 	<script>
-		var allChecked = true;
 		$(document).ready(function(){
-			$('#next').click(function(){
-				allChecked = $('input[name=personality]').is(':checked');
-				allChecked = $('input[name=activity]').is(':checked');
-				allChecked = $('input[name=job]').is(':checked');
-				allChecked = $('input[name=interested]').is(':checked');
-				allChecked = $('input[nameschool]').is(':checked');
-				allChecked = $('input[name=work]').is(':checked');
-				allChecked = $('input[name=abode]').is(':checked');
-				allChecked = $('input[name=livealone]').is(':checked');
-				allChecked = $('input[name=major]').is(':checked');
-				allChecked = $('input[name=homeeconomy]').is(':checked');
-				allChecked = $('input[name=havedate]').is(':checked');
-				allChecked = $('input[name=prefergenre]').is(':checked');
-				allChecked = $('input[name=preferchannel]').is(':checked');
-				allChecked = $('input[name=watchingtime]').is(':checked');
-				allChecked = $('input[name=used]').is(':checked');
-				allChecked = $('input[name=way]').is(':checked');
+			let allChecked = true;
+			const item_name = ['date','age','gender','personality','activity','job','interested',
+				'school','work','abode','siblings','family','livealone','major','homeeconomy',
+				'havedate','physicaltrouble','mentaltrouble','prefergenre','preferchannel',
+				'watchingtime','used','way','first','second','third'];
 
-		  		if($('#age').val().length != 0){
-		  			var age = Number($('#age').val());
-					if(age<1||age>200) allChecked = false;
+			$('#second').hide();
+
+			$('#next').click(function(){
+				let checked = [
+					$('input:radio[name=personality]').is(':checked'),
+					$('input:radio[name=activity]').is(':checked'),
+					$('input:radio[name=job]').is(':checked'),
+					$('input:checkbox[name=interested]').is(':checked'),
+					$('input:radio[name=school]').is(':checked'),
+					$('input:radio[name=work]').is(':checked'),
+					$('input:radio[name=abode]').is(':checked'),
+					$('input:radio[name=livealone]').is(':checked'),
+					$('input:radio[name=major]').is(':checked'),
+					$('input:radio[name=havedate]').is(':checked'),
+					$('input:checkbox[name=prefergenre]').is(':checked'),
+					$('input:radio[name=preferchannel]').is(':checked'),
+					$('input:radio[name=watchingtime]').is(':checked'),
+					$('input:radio[name=used]').is(':checked'),
+					$('input:radio[name=way]').is(':checked')
+				]
+
+				for(let i=0; i<checked.length; i++){
+					if(checked[i] == false) allChecked = false;
 				}
-		  		if($('#siblings').val().length == 0) allChecked = false;
+
+		  		if($('input[name=age]').val().length > 0){
+					let age = parseInt($('#age').val());
+					if(age<1 || age>200) allChecked = false;
+				}
+		  		if($('input[name=siblings]').val().length <= 0) allChecked = false;
 		  		else{
-		  			var siblings = Number($('#siblings').val());
+					let siblings = Number($('input[name=siblings]').val());
 					if(siblings<0||siblings>200) allChecked = false;
 				}
-		  		if($('#family').val().length == 0) allChecked = false;
+		  		if($('input[name=family]').val().length <= 0) allChecked = false;
 		  		else{
-		  			var family = Number($('#family').val());
+					let family = Number($('input[name=family]').val());
 					if(family<0||family>200) allChecked = false;
 				}
 
+				if(allChecked) {
+					$('#first').hide();
+					$('#second').show();
+				}
+				else {
+					allChecked = true;
+				}
+			});
+
+			$('#submit').click(function(){
+				alert("섭밋!")
+
+				let formData = $('#surveyForm').serialize();
+				formData.push({name:'firstLink', value:$('#firstLink').src});
+				formData.push({name:'secondLink', value:$('#secondLink').src});
+				formData.push({name:'thirdLink', value:$('#thirdLink').src});
+
+				$.ajax({
+					cache : false,
+					url : "{% url 'submit' %}",
+					type : 'POST',
+           			data : formData,
+					success: function (data) {
+						alert("응답 주셔서 감사합니다. 더 좋은 서비스 만들어 나갈게요!");
+						document.location = window.location.origin;
+					},
+					error : function(){
+					   	alert("오류가 발생했어요 Y.Y");
+				   	},
+				});
 			});
 		});
 	</script>
@@ -62,26 +104,23 @@
 		.text-shadow{
 			text-shadow: 0 .05rem .1rem rgba(0, 0, 0, .5);
 		}
-		#second{
-			display: none;
-		}
 	</style>
 </head>
 <body class="d-flex h-100 bg-app">
 	<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
 		<div class="out-container">
-			<header class="mb-auto pt-1 border-bottom">
+			<header class="mb-5 pt-1 border-bottom">
 				<div>
 					<h3 class="text-white text-shadow" style="font-weight: 800">
 						💞 드라마 취향 공유하기</h3>
 				</div>
 		  	</header>
 			<main class="tab-content">
-				<form name="testForm" action="" method="post">
-					<div id="first">
-						<div class="section my-5">
-							<p class="section-text text-white text-shadow">모든 항목에서 '현재'를 중심으로 응답해주십시오.</p>
-						</div>
+				<div id="first">
+					<div class="section mb-5">
+						<p class="section-text text-white text-shadow">모든 항목에서 '현재'를 중심으로 응답해주십시오.</p>
+					</div>
+					<form name="surveyForm" id="surveyForm" method="post">
 
 						<div class="row">
 							<div class="col-sm-6">
@@ -89,7 +128,7 @@
 								  <div class="card-body px-5 py-4">
 									<h4 class="card-title">나이</h4>
 									<p class="card-text">필수 입력 값이 아닙니다.<br>입력 가능 범위: 1~200</p>
-									<input id="age" class="form-control" aria-describedby="inputGroup-sizing-default" type="number" name="age" min="1" max="200">
+									<input class="form-control" aria-describedby="inputGroup-sizing-default" type="number" name="age" min="1" max="200">
 								  </div>
 								</div>
 							</div>
@@ -118,11 +157,11 @@
 										<p class="card-text">응답이 어렵다면 계속해서 읽어주십시오. 퇴근시간 지하철역에서 날 지나쳐 뛰어간 사람이 카드를 떨어트렸다.<br>
 											쫓아가 그 사람에게 건네줄 것인가(외향), 분실물 센터에 맡길 것인가(내향)?</p>
 										<div class="form-check form-check-inline">
-											<input type="radio" class="form-check-input" name="personality" value="외향형" required>
+											<input type="radio" class="form-check-input" name="personality" value="외향형">
 											<label class="form-check-label">외향형</label>
 										</div>
 										<div class="form-check form-check-inline">
-											<input type="radio" class="form-check-input" name="personality" value="내향형" required>
+											<input type="radio" class="form-check-input" name="personality" value="내향형">
 											<label class="form-check-label">내향형</label>
 										</div>
 									</div>
@@ -137,11 +176,11 @@
 										<h4 class="card-title">활동적인 편</h4>
 										<p class="card-text">응답이 어렵다면 계속해서 읽어주십시오. 응답이 어렵다면 계속해서 읽어주십시오. 자유로운 체육시간이 교실에서의 자율학습시간보다 좋다.</p>
 										<div class="form-check form-check-inline">
-											<input type="radio" class="form-check-input" name="activity" value="예" required>
+											<input type="radio" class="form-check-input" name="activity" value="예">
 											<label class="form-check-label">예</label>
 										</div>
 										<div class="form-check form-check-inline">
-											<input type="radio" class="form-check-input" name="activity" value="예" required>
+											<input type="radio" class="form-check-input" name="activity" value="예">
 											<label class="form-check-label">아니오</label>
 										</div>
 									</div>
@@ -156,55 +195,55 @@
 										<h4 class="card-title">직업</h4>
 										<p class="card-text">자신에게 가장 가깝다고 생각되는 항목을 선택하여 주십시오.</p>
 										<div class="form-check form-check-inline">
-											<input type="radio" class="form-check-input" name="job" value="학생" required>
+											<input type="radio" class="form-check-input" name="job" value="학생">
 											<label class="form-check-label">학생</label>
 										</div>
 										<div class="form-check form-check-inline">
-											<input type="radio" class="form-check-input" name="job" value="사무직" required>
+											<input type="radio" class="form-check-input" name="job" value="사무직">
 											<label class="form-check-label">사무직</label>
 										</div>
 										<div class="form-check form-check-inline">
-											<input type="radio" class="form-check-input" name="job" value="전문직" required>
+											<input type="radio" class="form-check-input" name="job" value="전문직">
 											<label class="form-check-label">전문직</label>
 										</div>
 										<div class="form-check form-check-inline">
-											<input type="radio" class="form-check-input" name="job" value="교사" required>
+											<input type="radio" class="form-check-input" name="job" value="교사">
 											<label class="form-check-label">교사</label>
 										</div>
 										<div class="form-check form-check-inline">
-											<input type="radio" class="form-check-input" name="job" value="프리랜서" required>
+											<input type="radio" class="form-check-input" name="job" value="프리랜서">
 											<label class="form-check-label">프리랜서</label>
 										</div>
 										<div class="form-check form-check-inline">
-											<input type="radio" class="form-check-input" name="job" value="전업주부" required>
+											<input type="radio" class="form-check-input" name="job" value="전업주부">
 											<label class="form-check-label">전업주부</label>
 										</div>
 										<div class="form-check form-check-inline">
-											<input type="radio" class="form-check-input" name="job" value="백수" required>
+											<input type="radio" class="form-check-input" name="job" value="백수">
 											<label class="form-check-label">백수</label>
 										</div>
 										<div class="form-check form-check-inline">
-											<input type="radio" class="form-check-input" name="job" value="군인" required>
+											<input type="radio" class="form-check-input" name="job" value="군인">
 											<label class="form-check-label">군인</label>
 										</div>
 										<div class="form-check form-check-inline">
-											<input type="radio" class="form-check-input" name="job" value="공무직" required>
+											<input type="radio" class="form-check-input" name="job" value="공무직">
 											<label class="form-check-label">공무직</label>
 										</div>
 										<div class="form-check form-check-inline">
-											<input type="radio" class="form-check-input" name="job" value="개인사업자" required>
+											<input type="radio" class="form-check-input" name="job" value="개인사업자">
 											<label class="form-check-label">개인사업자</label>
 										</div>
 										<div class="form-check form-check-inline">
-											<input type="radio" class="form-check-input" name="job" value="경영인" required>
+											<input type="radio" class="form-check-input" name="job" value="경영인">
 											<label class="form-check-label">경영인</label>
 										</div>
 										<div class="form-check form-check-inline">
-											<input type="radio" class="form-check-input" name="job" value="자원봉사자" required>
+											<input type="radio" class="form-check-input" name="job" value="자원봉사자">
 											<label class="form-check-label">자원봉사자</label>
 										</div>
 										<div class="form-check form-check-inline">
-											<input type="radio" class="form-check-input" name="job" value="아르바이트 직원" required>
+											<input type="radio" class="form-check-input" name="job" value="아르바이트 직원">
 											<label class="form-check-label">아르바이트 직원</label>
 										</div>
 									</div>
@@ -316,11 +355,11 @@
 								  <div class="card-body px-5 py-4">
 									<h4 class="card-title">재학 여부</h4>
 									<div class="form-check form-check-inline">
-										<input type="radio" class="form-check-input" name="school" value="예" required>
+										<input type="radio" class="form-check-input" name="school" value="예">
 										<label class="form-check-label">예</label>
 									</div>
 									<div class="form-check form-check-inline">
-										<input type="radio" class="form-check-input" name="school" value="아니오" required>
+										<input type="radio" class="form-check-input" name="school" value="아니오">
 										<label class="form-check-label">아니오</label>
 									</div>
 								  </div>
@@ -331,11 +370,11 @@
 								  <div class="card-body px-5 py-4">
 									<h4 class="card-title">재직 여부</h4>
 									<div class="form-check form-check-inline">
-										<input type="radio" class="form-check-input" name="work" value="예" required>
+										<input type="radio" class="form-check-input" name="work" value="예">
 										<label class="form-check-label">예</label>
 									</div>
 									<div class="form-check form-check-inline">
-										<input type="radio" class="form-check-input" name="work" value="아니오" required>
+										<input type="radio" class="form-check-input" name="work" value="아니오">
 										<label class="form-check-label">아니오</label>
 									</div>
 								  </div>
@@ -349,15 +388,15 @@
 								  <div class="card-body px-5 py-4">
 									<h4 class="card-title">거주지</h4>
 									  <div class="form-check form-check-inline">
-										<input type="radio" class="form-check-input" name="abode" value="국내 수도권" required>
+										<input type="radio" class="form-check-input" name="abode" value="국내 수도권">
 										<label class="form-check-label">국내 수도권</label>
 									  </div>
 									  <div class="form-check form-check-inline">
-										<input type="radio" class="form-check-input" name="abode" value="국내 지방" required>
+										<input type="radio" class="form-check-input" name="abode" value="국내 지방">
 										<label class="form-check-label">국내 지방</label>
 									  </div>
 									  <div class="form-check form-check-inline">
-										<input type="radio" class="form-check-input" name="abode" value="해외" required>
+										<input type="radio" class="form-check-input" name="abode" value="해외">
 										<label class="form-check-label">해외</label>
 									  </div>
 								  </div>
@@ -371,7 +410,7 @@
 								  <div class="card-body px-5 py-4">
 									<h4 class="card-title">형제자매 수</h4>
 									  <p class="card-text">입력 가능 범위: 0~200</p>
-									<input class="form-control" type="number" name="siblings" min="0" max="200" required>
+									<input class="form-control" type="number" name="siblings" min="0" max="200">
 								  </div>
 								</div>
 							</div>
@@ -380,7 +419,7 @@
 								  <div class="card-body px-5 py-4">
 									<h4 class="card-title">가족 수</h4>
 									  <p class="card-text">입력 가능 범위: 0~200</p>
-									<input class="form-control" type="number" name="family" min="0" max="200" required>
+									<input class="form-control" type="number" name="family" min="0" max="200">
 								  </div>
 								</div>
 							</div>
@@ -392,11 +431,11 @@
 								  <div class="card-body px-5 py-4">
 									<h4 class="card-title">자취여부</h4>
 									<div class="form-check form-check-inline">
-										<input type="radio" class="form-check-input" name="livealone" value="예" required>
+										<input type="radio" class="form-check-input" name="livealone" value="예">
 										<label class="form-check-label">예</label>
 									</div>
 									<div class="form-check form-check-inline">
-										<input type="radio" class="form-check-input" name="livealone" value="아니오" required>
+										<input type="radio" class="form-check-input" name="livealone" value="아니오">
 										<label class="form-check-label">아니오</label>
 									</div>
 								  </div>
@@ -407,11 +446,11 @@
 								  <div class="card-body px-5 py-4">
 									<h4 class="card-title">전공계열</h4>
 									<div class="form-check form-check-inline">
-										<input type="radio" class="form-check-input" name="major" value="이과" required>
+										<input type="radio" class="form-check-input" name="major" value="이과">
 										<label class="form-check-label">이과</label>
 									</div>
 									<div class="form-check form-check-inline">
-										<input type="radio" class="form-check-input" name="major" value="문과" required>
+										<input type="radio" class="form-check-input" name="major" value="문과">
 										<label class="form-check-label">문과</label>
 									</div>
 								  </div>
@@ -445,11 +484,11 @@
 								  <div class="card-body px-5 py-4">
 									<h4 class="card-title">연애경험</h4>
 									<div class="form-check form-check-inline">
-										<input type="radio" class="form-check-input" name="havedate" value="예" required>
+										<input type="radio" class="form-check-input" name="havedate" value="예">
 										<label class="form-check-label">있음</label>
 									</div>
 									<div class="form-check form-check-inline">
-										<input type="radio" class="form-check-input" name="havedate" value="아니오" required>
+										<input type="radio" class="form-check-input" name="havedate" value="아니오">
 										<label class="form-check-label">없음</label>
 									</div>
 								  </div>
@@ -542,11 +581,11 @@
 									<h4 class="card-title">선호채널</h4>
 									  <p class="card-text">지상파 채널: KBS1, KBS2, MBC, SBS, EBS<br>케이블: 그 외 모든 채널</p>
 									  <div class="form-check form-check-inline">
-										<input type="radio" class="form-check-input" name="preferchannel" value="지상파" required>
+										<input type="radio" class="form-check-input" name="preferchannel" value="지상파">
 										<label class="form-check-label">지상파</label>
 									  </div>
 									  <div class="form-check form-check-inline">
-										<input type="radio" class="form-check-input" name="preferchannel" value="케이블" required>
+										<input type="radio" class="form-check-input" name="preferchannel" value="케이블">
 										<label class="form-check-label">케이팝</label>
 									  </div>
 								  </div>
@@ -558,11 +597,11 @@
 									<h4 class="card-title">주 시청 시간</h4>
 									  <p class="card-text">낮과 밤 구분으로, 24시간이 자유로운 휴일에는 어느 시간 대 사이에 주로 시청하는지, 또는 어느 시간대에 시청하고 싶은가요?</p>
 									<div class="form-check form-check-inline">
-										<input type="radio" class="form-check-input" name="watchingtime" value="6-18시" required>
+										<input type="radio" class="form-check-input" name="watchingtime" value="6-18시">
 										<label class="form-check-label">6-18시</label>
 									</div>
 									<div class="form-check form-check-inline">
-										<input type="radio" class="form-check-input" name="watchingtime" value="18-6시" required>
+										<input type="radio" class="form-check-input" name="watchingtime" value="18-6시">
 										<label class="form-check-label">18-6시</label>
 									</div>
 								  </div>
@@ -576,15 +615,15 @@
 								  <div class="card-body px-5 py-4">
 									<h4 class="card-title">드라마 주 시청 수단</h4>
 									  <div class="form-check form-check-inline">
-										<input type="radio" class="form-check-input" name="used" value="TV 또는 빔 프로젝터" required>
+										<input type="radio" class="form-check-input" name="used" value="TV 또는 빔 프로젝터">
 										<label class="form-check-label">TV 또는 빔 프로젝터</label>
 									  </div>
 									  <div class="form-check form-check-inline">
-										<input type="radio" class="form-check-input" name="used" value="컴퓨터(데스크탑)" required>
+										<input type="radio" class="form-check-input" name="used" value="컴퓨터(데스크탑)">
 										<label class="form-check-label">컴퓨터(데스크탑)</label>
 									  </div>
 									  <div class="form-check form-check-inline">
-										<input type="radio" class="form-check-input" name="used" value="휴대용 기기(노트북, 휴대폰 등)" required>
+										<input type="radio" class="form-check-input" name="used" value="휴대용 기기(노트북, 휴대폰 등)">
 										<label class="form-check-label">휴대용 기기(노트북, 휴대폰 등)</label>
 									  </div>
 								  </div>
@@ -598,34 +637,47 @@
 								  <div class="card-body px-5 py-4">
 									<h4 class="card-title">드라마 주 시청 방법</h4>
 									<div class="form-check form-check-inline">
-										<input type="radio" class="form-check-input" name="way" value="본방송" required>
+										<input type="radio" class="form-check-input" name="way" value="본방송">
 										<label class="form-check-label">본방송</label>
 									</div>
 									<div class="form-check form-check-inline">
-										<input type="radio" class="form-check-input" name="way" value="재방송" required>
+										<input type="radio" class="form-check-input" name="way" value="재방송">
 										<label class="form-check-label">재방송</label>
 									</div>
 									<div class="form-check form-check-inline">
-										<input type="radio" class="form-check-input" name="way" value="다시보기 다운로드(유료 또는 무료)" required>
+										<input type="radio" class="form-check-input" name="way" value="다시보기 다운로드(유료 또는 무료)">
 										<label class="form-check-label">다시보기 다운로드(유료 또는 무료)</label>
 									</div>
 									<div class="form-check form-check-inline">
-										<input type="radio" class="form-check-input" name="way" value="다시보기, 연재작(온라인 콘텐츠 플랫폼 ex.NETFLIX, 왓챠)" required>
+										<input type="radio" class="form-check-input" name="way" value="다시보기, 연재작(온라인 콘텐츠 플랫폼 ex.NETFLIX, 왓챠)">
 										<label class="form-check-label">다시보기, 연재작(온라인 콘텐츠 플랫폼 ex.NETFLIX, 왓챠)</label>
 									</div>
 								  </div>
 								</div>
 							</div>
 						</div>
-						<div class="text-center m-5">
-							<button id="next" class="btn btn-lg btn-secondary fw-bold border-white">NEXT →</button>
-						</div>
-					</div> <!--end of tab 1-->
-					<div id="second">
-						<iframe src="https://m.serieson.naver.com/search/web/search.nhn"></iframe>
+					</form>
+					<div class="text-center m-5">
+						<div id="next" class="btn btn-lg btn-secondary fw-bold border-white">NEXT →</div>
 					</div>
+				</div> <!--end of tab 1-->
+				<div id="second" style="text-align: center;">
+					<div class="section mb-3">
+						<h2 class="section-title text-white">최애 드라마 3종 선정!</h2>
+						<p class="section-text text-white">당신이 가장 사랑했던, 사랑하고 있는 드라마는 무엇인가요?</p>
+					</div>
+					프레임에서 자신이 찾는 작품을 검색 후 선택해주세요✨
+					<h4 class="m-2">1순위</h4>
+					<iframe id="firstLink" src="https://m.serieson.naver.com/search/web/search.nhn" class="mb-3"></iframe>
+					<h4 class="m-2">2순위</h4>
+					<iframe id="secondLink" src="https://m.serieson.naver.com/search/web/search.nhn" class="mb-3"></iframe>
+					<h4 class="m-2">3순위</h4>
+					<iframe id="thirdLink" src="https://m.serieson.naver.com/search/web/search.nhn" class="mb-3"></iframe>
 
-				</form>
+					<div class="text-center m-5">
+						<div id="submit" class="btn btn-lg btn-secondary fw-bold border-white">전송하기🎁</div>
+					</div>
+				</div>
 			</main>
 		</div>
 		<footer class="out-container mt-auto text-center">

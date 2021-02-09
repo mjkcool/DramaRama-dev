@@ -42,5 +42,19 @@ def result(request):
 
 @method_decorator(csrf_exempt)
 def survey(request):
-
     return render(request, 'dramarama/survey.html')
+
+@method_decorator(csrf_exempt)
+def submitSurvey(request):
+    item_name = ['date', 'age', 'gender', 'personality', 'activity', 'job', 'interested',
+                 'school', 'work', 'abode', 'siblings', 'family', 'livealone', 'major', 'homeeconomy',
+                 'havedate', 'physicaltrouble', 'mentaltrouble', 'prefergenre', 'preferchannel',
+                 'watchingtime', 'used', 'way'];
+    items = {}
+    try:
+        for i in range(len(item_name)):
+            items[item_name[i]] = request.POST.get(item_name[i],"");
+    except KeyError:
+        return render(request, "survey.html")
+    else:
+        return HttpResponse(json.dumps(),content_type="application/json")

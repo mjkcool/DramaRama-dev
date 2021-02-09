@@ -8,5 +8,6 @@ urlpatterns = [
     path('Who-you-are', views.form, name='form'),
     path('To.you--From.Rama💜', views.result),
     path('your-answer', views.answer),
-    path('share-your-joy!', views.survey, name='survey')
+    path('share-your-joy!', views.survey, name='survey'),
+    path('submit', views.submitSurvey, name='submit')
 ]
