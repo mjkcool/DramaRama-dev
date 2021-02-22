@@ -22,10 +22,10 @@
 	<script>
 		$(document).ready(function(){
 			let allChecked = true;
-			const item_name = ['date','age','gender','personality','activity','job','interested',
+			const item_name = ['age','gender','personality','activity','job','interested',
 				'school','work','abode','siblings','family','livealone','major','homeeconomy',
 				'havedate','physicaltrouble','mentaltrouble','prefergenre','preferchannel',
-				'watchingtime','used','way','first','second','third'];
+				'watchingtime','used','way'];
 
 			$('#second').hide();
 
@@ -76,27 +76,27 @@
 				}
 			});
 
+			let URL="{% url 'submit' %}";
 			$('#submit').click(function(){
-				alert("섭밋!")
-
-				let formData = $('#surveyForm').serialize();
-				formData.push({name:'firstLink', value:$('#firstLink').src});
-				formData.push({name:'secondLink', value:$('#secondLink').src});
-				formData.push({name:'thirdLink', value:$('#thirdLink').src});
-
-				$.ajax({
-					cache : false,
-					url : "{% url 'submit' %}",
-					type : 'POST',
-           			data : formData,
-					success: function (data) {
-						alert("응답 주셔서 감사합니다. 더 좋은 서비스 만들어 나갈게요!");
-						document.location = window.location.origin;
-					},
-					error : function(){
-					   	alert("오류가 발생했어요 Y.Y");
-				   	},
-				});
+				let result = confirm('나의 드라마 취향을 전송할까요? 전송된 답변은 되돌릴 수 없어요. 아니오를 누르면 입력이 초기화됩니다.');
+				if(result) {
+					// var form = $('#surveyForm').serialize();
+					// form.push({name:'firstLink', value:});
+					// form.push({name:'secondLink', value:$('#secondLink').src});
+					// form.push({name:'thirdLink', value:$('#thirdLink').src});
+					// var formData = form.reduce((acc, {name, value}) => ({...acc, [name]: value}),{});
+					var formData = {};
+					for(var i=0; i<=item_name.length; i++) {
+						formData[item_name[i]]
+								= $('input[name='+item_name[i]+']').val()?$('input[name='+item_name[i]+']').val():"";
+					}
+					formData['first'] = $('#firstLink').attr('src')?$('#firstLink').attr('src'):"";
+					formData['second'] = $('#secondLink').attr('src')?$('#secondLink').attr('src'):"";
+					formData['third'] = $('#thirdLink').attr('src')?$('#thirdLink').attr('src'):"";
+					alert('답변을 전송했습니다! 감사합니다💜');
+					$.post(URL, formData);
+				}
+				location.href = window.location.origin;
 			});
 		});
 	</script>
@@ -657,6 +657,10 @@
 							</div>
 						</div>
 					</form>
+					<div class="section text-warning" >
+						⚠ 입력 값이 충족되지 않으면 다음 페이지로 넘어가지 않습니다.
+					</div>
+
 					<div class="text-center m-5">
 						<div id="next" class="btn btn-lg btn-secondary fw-bold border-white">NEXT →</div>
 					</div>
