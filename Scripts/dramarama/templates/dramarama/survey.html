@@ -20,86 +20,85 @@
 	<link href="{% static 'css/form.css' %}" rel="stylesheet">
 	<link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon"/>
 	<script>
-		$(document).ready(function(){
-			let allChecked = true;
-			const item_name = ['age','gender','personality','activity','job','interested',
-				'school','work','abode','siblings','family','livealone','major','homeeconomy',
-				'havedate','physicaltrouble','mentaltrouble','prefergenre','preferchannel',
-				'watchingtime','used','way'];
+	let URL="{% url 'submit' %}";
+	$(document).ready(function(){
+		let allChecked = true;
+		const item_name = ['age','gender','personality','activity','job','interested',
+			'school','work','abode','siblings','family','livealone','major','homeeconomy',
+			'havedate','physicaltrouble','mentaltrouble','prefergenre','preferchannel',
+			'watchingtime','used','way'];
 
-			$('#second').hide();
+		$('#second').hide();
 
-			$('#next').click(function(){
-				let checked = [
-					$('input:radio[name=personality]').is(':checked'),
-					$('input:radio[name=activity]').is(':checked'),
-					$('input:radio[name=job]').is(':checked'),
-					$('input:checkbox[name=interested]').is(':checked'),
-					$('input:radio[name=school]').is(':checked'),
-					$('input:radio[name=work]').is(':checked'),
-					$('input:radio[name=abode]').is(':checked'),
-					$('input:radio[name=livealone]').is(':checked'),
-					$('input:radio[name=major]').is(':checked'),
-					$('input:radio[name=havedate]').is(':checked'),
-					$('input:checkbox[name=prefergenre]').is(':checked'),
-					$('input:radio[name=preferchannel]').is(':checked'),
-					$('input:radio[name=watchingtime]').is(':checked'),
-					$('input:radio[name=used]').is(':checked'),
-					$('input:radio[name=way]').is(':checked')
-				]
+		$('#next').click(function(){
+			let checked = [
+				$('input:radio[name=personality]').is(':checked'),
+				$('input:radio[name=activity]').is(':checked'),
+				$('input:radio[name=job]').is(':checked'),
+				$('input:checkbox[name=interested]').is(':checked'),
+				$('input:radio[name=school]').is(':checked'),
+				$('input:radio[name=work]').is(':checked'),
+				$('input:radio[name=abode]').is(':checked'),
+				$('input:radio[name=livealone]').is(':checked'),
+				$('input:radio[name=major]').is(':checked'),
+				$('input:radio[name=havedate]').is(':checked'),
+				$('input:checkbox[name=prefergenre]').is(':checked'),
+				$('input:radio[name=preferchannel]').is(':checked'),
+				$('input:radio[name=watchingtime]').is(':checked'),
+				$('input:radio[name=used]').is(':checked'),
+				$('input:radio[name=way]').is(':checked')
+			]
 
-				for(let i=0; i<checked.length; i++){
-					if(checked[i] == false) allChecked = false;
-				}
+			for(let i=0; i<checked.length; i++){
+				if(checked[i] == false) allChecked = false;
+			}
 
-		  		if($('input[name=age]').val().length > 0){
-					let age = parseInt($('#age').val());
-					if(age<1 || age>200) allChecked = false;
-				}
-		  		if($('input[name=siblings]').val().length <= 0) allChecked = false;
-		  		else{
-					let siblings = Number($('input[name=siblings]').val());
-					if(siblings<0||siblings>200) allChecked = false;
-				}
-		  		if($('input[name=family]').val().length <= 0) allChecked = false;
-		  		else{
-					let family = Number($('input[name=family]').val());
-					if(family<0||family>200) allChecked = false;
-				}
+			if($('input[name=age]').val().length > 0){
+				let age = parseInt($('#age').val());
+				if(age<1 || age>200) allChecked = false;
+			}
+			if($('input[name=siblings]').val().length <= 0) allChecked = false;
+			else{
+				let siblings = Number($('input[name=siblings]').val());
+				if(siblings<0||siblings>200) allChecked = false;
+			}
+			if($('input[name=family]').val().length <= 0) allChecked = false;
+			else{
+				let family = Number($('input[name=family]').val());
+				if(family<0||family>200) allChecked = false;
+			}
 
-				if(allChecked) {
-					$('#first').hide();
-					$('#second').show();
-				}
-				else {
-					allChecked = true;
-				}
-			});
-
-			let URL="{% url 'submit' %}";
-			$('#submit').click(function(){
-				let result = confirm('나의 드라마 취향을 전송할까요? 전송된 답변은 되돌릴 수 없어요. 아니오를 누르면 입력이 초기화됩니다.');
-				if(result) {
-					// var form = $('#surveyForm').serialize();
-					// form.push({name:'firstLink', value:});
-					// form.push({name:'secondLink', value:$('#secondLink').src});
-					// form.push({name:'thirdLink', value:$('#thirdLink').src});
-					// var formData = form.reduce((acc, {name, value}) => ({...acc, [name]: value}),{});
-					var formData = {};
-					for(var i=0; i<=item_name.length; i++) {
-						formData[item_name[i]]
-								= $('input[name='+item_name[i]+']').val()?$('input[name='+item_name[i]+']').val():"";
-					}
-					formData['first'] = $('#firstLink').attr('src')?$('#firstLink').attr('src'):"";
-					formData['second'] = $('#secondLink').attr('src')?$('#secondLink').attr('src'):"";
-					formData['third'] = $('#thirdLink').attr('src')?$('#thirdLink').attr('src'):"";
-					alert('답변을 전송했습니다! 감사합니다💜');
-					$.post(URL, formData);
-				}
-				location.href = window.location.origin;
-			});
+			if(allChecked) {
+				$('#first').hide();
+				$('#second').show();
+				$('html, body').scrollTop(0);
+			}
+			else {
+				allChecked = true;
+			}
 		});
+
+
+		$('#submit').click(function(){
+			let result = confirm('나의 드라마 취향을 전송할까요? 전송된 답변은 되돌릴 수 없어요. 아니오를 누르면 입력이 초기화됩니다.');
+			if(result) {
+				var formData = {};
+				formData[item_name[0]] = $('input[name='+item_name[0]+']').val();
+				for(var i=1; i<=item_name.length; i++) {
+					formData[item_name[i]]
+							= $('input[name='+item_name[i]+']').val()?$('input[name='+item_name[i]+']').val():"";
+				}
+				formData['first'] = $('#firstLink').attr('src')?$('#firstLink').attr('src'):"";
+				formData['second'] = $('#secondLink').attr('src')?$('#secondLink').attr('src'):"";
+				formData['third'] = $('#thirdLink').attr('src')?$('#thirdLink').attr('src'):"";
+				alert('답변을 전송했습니다! 감사합니다💜');
+				$.post(URL, formData);
+			}
+			location.href = window.location.origin;
+		});
+	});
 	</script>
+	<script src="{% static 'js/survey.js' %}" type="javascript"></script>
 	<style>
 		.text-shadow{
 			text-shadow: 0 .05rem .1rem rgba(0, 0, 0, .5);
