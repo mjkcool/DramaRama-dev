@@ -3,9 +3,9 @@ Made by Python / Use Django, Pandas
   
 
 ## Data preparation
-- 프로젝트 루트에 위치한 분석할 사전 설문조사 데이터 csv파일을 `dataframe`형태로 불러온다.
-- 사전 설문조사 데이터를 바탕으로 수동작업된 드라마 정보 데이터 DB를 `dataframe`형태로 불러온다.
-- 가중치 계산을 위해 드라마 정보 데이터 `dataframe`으로부터 드라마 값 테이블을 만든다.
+- We surveyed some people and progress the data had been collected.
+- we made separate labelling table using table from the top.
+- Make it .csv and put the our sqlite3 database.
   
 <p align="center">
 <img width="60%" src="https://user-images.githubusercontent.com/53461080/101436453-8582ad00-3951-11eb-8008-a64083801453.png" />
